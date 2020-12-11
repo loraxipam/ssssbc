@@ -38,10 +38,8 @@ The clock just goes on the I2C SDA/SCL lines.
 The Fritzing diagram shows the basic layout. Be sure to calculate the right resistor for your LED. The typical 74HC595 doesn't
 like lots of current through it so get the specs for your LED and use the right resistors.
 
-<video width=384 controls>
-  <src="ssssbc_demo.m4v" alt="Single Seven Segment Binary Clock" type="video/mp4">
-  Sorry browser...
-</video>
+![Single Seven Segment Binary Clock](ssssbc_demo.gif)
+
 
 ### Possible configurations
 
