@@ -21,12 +21,12 @@ This sketch accomodates either common anode or common cathode LED. Just change o
 but always tricky with so many wires. Here's the high level setup.
 
 ```
- | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 5V (my common anode)  
+ | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 3.3V (the common anode from my Feather)  
  |             11 -|- RCLK          Q1 -|-  C(4)  
- |     A0      10 -|- SER           Q2 -|-  B(6)  
+ |     A1      10 -|- SER           Q2 -|-  B(6)  
  +------+--------+++                Q3 -|-  E(1)  
         |        ||                 Q4 -|-  F(10)  
-     trim pot   clock               Q5 -|-  D(2)  
+     trim pot  DS3231               Q5 -|-  D(2)  
                                     Q6 -|-  G(9)  
                                     Q7 -|-  A(7)  
 ```
@@ -38,7 +38,10 @@ The clock just goes on the I2C SDA/SCL lines.
 The Fritzing diagram shows the basic layout. Be sure to calculate the right resistor for your LED. The typical 74HC595 doesn't
 like lots of current through it so get the specs for your LED and use the right resistors.
 
-<img src="ssssbc1.gif" alt="Single Seven Segment Binary Clock" width=512 />
+<video width=384 controls>
+  <src="ssssbc_demo.m4v" alt="Single Seven Segment Binary Clock" type="video/mp4">
+  Sorry browser...
+</video>
 
 ### Possible configurations
 
