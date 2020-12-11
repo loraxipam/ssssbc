@@ -12,22 +12,24 @@ a DS3231 instead and it's much better accuracy, so you can run this most any Ard
    - ![Realtime clock](https://www.adafruit.com/product/3028) The DS3231 is good or go with DS1307. DS3231 is 3V happy.
    - ![Shift register](https://www.digikey.com/en/products/filter/logic-shift-registers/712) Ye olde 74HC595 for me.
    - ![Seven segment LED](https://www.digikey.com/en/products/filter/display-modules-led-character-and-numeric) Pick a LED.
-   - [Resistors] You'll need a few to get the right mA through your LED. Do the math. Usually 110 ohm with a red LED is fine.
-   - [Trim pot] A trim pot can be used to choose which of the bit patterns you'd like to see
+   - Resistors - You'll need a few to get the right mA through your LED. Do the math. Usually 110 ohm with a red LED is fine.
+   - Trim pot - A trim pot can be used to choose which of the bit patterns you'd like to see
 
 ## Layout
 
 This sketch accomodates either common anode or common cathode LED. Just change one variable. The breadboard layout is simple
 but always tricky with so many wires. Here's the high level setup.
 
- | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 5V (my common anode)
- |             11 -|- RCLK          Q1 -|-  C(4)
- |     A0      10 -|- SER           Q2 -|-  B(6)
- +------+--------+++                Q3 -|-  E(1)
-        |        ||                 Q4 -|-  F(10)
-     trim pot   clock               Q5 -|-  D(2)
-                                    Q6 -|-  G(9)
-                                    Q7 -|-  A(7)
+```
+ | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 5V (my common anode)  
+ |             11 -|- RCLK          Q1 -|-  C(4)  
+ |     A0      10 -|- SER           Q2 -|-  B(6)  
+ +------+--------+++                Q3 -|-  E(1)  
+        |        ||                 Q4 -|-  F(10)  
+     trim pot   clock               Q5 -|-  D(2)  
+                                    Q6 -|-  G(9)  
+                                    Q7 -|-  A(7)  
+```
 
 The clock just goes on the I2C SDA/SCL lines.  
 
