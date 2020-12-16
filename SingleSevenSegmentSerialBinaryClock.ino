@@ -7,6 +7,7 @@
  * 74HC595N 8-bit shift register
  * trim pot on an analog port
  * DS3231 realtime clock
+ * SPST switch for DST selection (optional)
  
  This uses a shift register so I can have enough pins to include an RTC.
 
@@ -42,6 +43,10 @@
 #define CLOCK 12
 #define LATCH 11
 #define DATA  10
+
+// Put a toggle switch on an digital port to signal if DST should be added.
+// This will be pulled up by default so tie it to ground to signal TRUE.
+#define DST_PIN 6
 
 // This is the "LowDPR" LED-to-74HC595 mapping that I typically use
 // lowDPR is the default layout but lowDPRows I think is the coolest...maybe
@@ -233,6 +238,10 @@ void patternDemo() {
   }
 }
 
+// "dst" reads the toggle pin and adds an hour if it's true
+int dst(int inHour) {
+  return (inHour+~digitalRead(DST_PIN))%24;
+}
 
 
 void setup() {
@@ -243,6 +252,7 @@ void setup() {
   pinMode(CLOCK, OUTPUT);
   pinMode(LATCH, OUTPUT);
   pinMode( DATA, OUTPUT);
+  pinMode(DST_PIN, INPUT_PULLUP);
 
   // start the peripherals
   Wire.begin();
@@ -306,7 +316,7 @@ void setup() {
   rtc.getTime();
   Hor = (int)(rtc.hour);
   Sec = (int)(rtc.minute*60+rtc.second);
-  showTimeShift(Hor, Sec);
+  showTimeShift(dst(Hor), Sec);
 }
 
 void loop() {
@@ -332,7 +342,7 @@ void loop() {
     // provide a short demo
     patternDemo();
     // show the current time
-    showTimeShift(Hor, Sec);
+    showTimeShift(dst(Hor), Sec);
   }
 
   // Read the current time
@@ -342,7 +352,7 @@ void loop() {
 
   // Show the current time
   if ((Sec%30)==0) {  // every 30 seconds is better than every 450 seconds
-    showTimeShift(Hor, Sec);
+    showTimeShift(dst(Hor), Sec);
   }
 
   // DEBUG

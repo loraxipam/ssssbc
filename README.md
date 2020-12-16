@@ -5,15 +5,16 @@ segment display, you can get to within about five minutes accuracy of what time 
 
 ## Hardware
 
-My first cut at this was to use a Adafruit BLE Feather and update my cruddy RTC with a BLE message once a month. But I got
+My first cut at this was to use an Adafruit BLE Feather and update my cruddy RTC with a BLE message once a month. But I got
 a DS3231 instead and it's much better accuracy, so you can run this most any Arduino-ish thingy you have.
 
    - ![Adafruit](https://www.adafruit.com/product/2829) Feather or Metro or Arduino. The choice is yours...the choice is yours.
    - ![Realtime clock](https://www.adafruit.com/product/3028) The DS3231 is good or go with DS1307. DS3231 is 3V happy.
    - ![Shift register](https://www.digikey.com/en/products/filter/logic-shift-registers/712) Ye olde 74HC595 for me.
    - ![Seven segment LED](https://www.digikey.com/en/products/filter/display-modules-led-character-and-numeric) Pick a LED.
-   - Resistors - You'll need a few to get the right mA through your LED. Do the math. Usually 110 ohm with a red LED is fine.
-   - Trim pot - A trim pot can be used to choose which of the bit patterns you'd like to see
+   - Resistors - You'll need eight and still get the right mA through your LED. Do the math. A 100 ohm @ 3.3V with a red LED is usually fine.
+   - Trim pot - A trim pot can be used to choose which of the bit patterns you'd like to see.
+   - Switch - A single-pole single-throw switch to turn on/off daylight savings time (optional).
 
 ## Layout
 
@@ -21,17 +22,17 @@ This sketch accomodates either common anode or common cathode LED. Just change o
 but always tricky with so many wires. Here's the high level setup.
 
 ```
- | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 3.3V (the common anode from my Feather)  
+ | Arduino Pin 12 -|- SRCLK 74HC595 Q0 -|- DP(5) LED (3 or 8) -+- 3.3V (common anode from Feather)
  |             11 -|- RCLK          Q1 -|-  C(4)  
- |     A1      10 -|- SER           Q2 -|-  B(6)  
- +------+--------+++                Q3 -|-  E(1)  
-        |        ||                 Q4 -|-  F(10)  
-     trim pot  DS3231               Q5 -|-  D(2)  
-                                    Q6 -|-  G(9)  
-                                    Q7 -|-  A(7)  
+ |             10 -|- SER           Q2 -|-  B(6)  
+ |     A1       6 -|-+              Q3 -|-  E(1)              
+ +------+--------+++  \             Q4 -|-  F(10)
+        |        ||    \            Q5 -|-  D(2) 
+     trim pot  DS3231  SPST         Q6 -|-  G(9) 
+                                    Q7 -|-  A(7) 
 ```
 
-The clock just goes on the I2C SDA/SCL lines.  
+The clock just goes on the I2C SDA/SCL lines. Pick any open port for your switch.  
 
 ![Block diagram](ssssbc1.pdf)
 
@@ -67,4 +68,4 @@ The final build will incorporate a few additions.
 
    - BLE communication: get time from UART. Show the name of the current pattern and time.
    - Dimmer: global PWM from a photosensor. (?)
-   - DST: Set your offsets settings, and you'll be set.
+   - DST: Set your offsets settings, and you'll be set. (DONE)
